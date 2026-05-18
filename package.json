@@ -1,0 +1,8 @@
+{
+"name": "aimentors-backend",
+"version": "1.0.0",
+"dependencies": {
+"@vercel/node": "^3.0.0",
+"resend": "^3.2.0"
+}
+}
