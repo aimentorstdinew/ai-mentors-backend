@@ -2,7 +2,7 @@ const { Resend } = require("resend");
 
 module.exports = async (req, res) => {
 try {
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = "re_M4RbtNZ4_PBssFKXPwqbMFTxyPUaoLPhz";
 
 ```
 if (req.method !== "POST") {
