@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 ```
 return res.status(200).json({
   success: true,
-  message: "Resend imported successfully"
+  message: "OK"
 });
 ```
 
@@ -17,4 +17,3 @@ error: error.message
 });
 }
 }
-
