@@ -31,21 +31,40 @@ export default async function handler(req, res) {
 
     // SUPPORT BOTH FORMS
     const {
-      name,
-      firstName,
-      lastName,
-      email,
-      phone,
-      service,
-      message,
-      projectDetails
-    } = req.body || {};
+  name,
+  firstName,
+  lastName,
+  fullName,
+  email,
+  phone,
+  mobile,
+  service,
+  selectedService,
+  message,
+  projectDetails,
+  details
+} = req.body || {};
 
-    // FINAL NAME (Combines fields if first/last name structure is used)
-    const finalName = name || `${firstName || ""} ${lastName || ""}`.trim();
+const finalName =
+  name ||
+  fullName ||
+  `${firstName || ""} ${lastName || ""}`.trim();
 
-    // FINAL MESSAGE (Accepts either text area field)
-    const finalMessage = message || projectDetails || "";
+const finalPhone =
+  phone ||
+  mobile ||
+  "";
+
+const finalService =
+  service ||
+  selectedService ||
+  "";
+
+const finalMessage =
+  message ||
+  projectDetails ||
+  details ||
+  "";
 
     // SEND EMAIL
     const result = await resend.emails.send({
