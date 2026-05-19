@@ -11,7 +11,7 @@ const result = await resend.emails.send({
   to: "aimentorstdi@gmail.com",
   subject: "Static Test Email",
   html: `
-    <h1>Resend Working Successfully 🚀</h1>
+    <h1>Resend Working Successfully</h1>
 
     <p>Name: Nitin</p>
 
