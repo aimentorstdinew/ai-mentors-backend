@@ -3,8 +3,18 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
+  // CORS HEADERS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // PREFLIGHT REQUEST
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   try {
-    // Browser test
+    // HEALTH CHECK
     if (req.method === "GET") {
       return res.status(200).json({
         success: true,
@@ -12,42 +22,27 @@ export default async function handler(req, res) {
       });
     }
 
-    // Only allow POST
+    // ONLY ALLOW POST
     if (req.method !== "POST") {
       return res.status(405).json({
         error: "Method not allowed"
       });
     }
 
-    const body = req.body || {};
-
-    const {
-      name,
-      email,
-      phone,
-      service,
-      message
-    } = body;
-
-    // Test static fallback values
-    const finalName = name || "Nitin Verma";
-    const finalEmail = email || "test@gmail.com";
-    const finalPhone = phone || "9876543210";
-    const finalService = service || "Web Development";
-    const finalMessage = message || "This is a test email from contact form.";
+    const { name, email, phone, service, message } = req.body || {};
 
     const result = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "aimentorstdi@gmail.com",
-      subject: `New Contact Form from ${finalName}`,
+      subject: `New Contact Form from ${name || "Unknown"}`,
       html: `
         <h1>New Contact Form Message</h1>
-        <p><strong>Name:</strong> ${finalName}</p>
-        <p><strong>Email:</strong> ${finalEmail}</p>
-        <p><strong>Phone:</strong> ${finalPhone}</p>
-        <p><strong>Service:</strong> ${finalService}</p>
+        <p><strong>Name:</strong> ${name || ""}</p>
+        <p><strong>Email:</strong> ${email || ""}</p>
+        <p><strong>Phone:</strong> ${phone || ""}</p>
+        <p><strong>Service:</strong> ${service || ""}</p>
         <p><strong>Message:</strong></p>
-        <p>${finalMessage}</p>
+        <p>${message || ""}</p>
       `,
     });
 
