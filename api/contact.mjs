@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // PREFLIGHT REQUEST
+  // HANDLE PREFLIGHT
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -29,20 +29,37 @@ export default async function handler(req, res) {
       });
     }
 
-    const { name, email, phone, service, message } = req.body || {};
+    // SUPPORT BOTH FORMS
+    const {
+      name,
+      firstName,
+      lastName,
+      email,
+      phone,
+      service,
+      message,
+      projectDetails
+    } = req.body || {};
 
+    // FINAL NAME (Combines fields if first/last name structure is used)
+    const finalName = name || `${firstName || ""} ${lastName || ""}`.trim();
+
+    // FINAL MESSAGE (Accepts either text area field)
+    const finalMessage = message || projectDetails || "";
+
+    // SEND EMAIL
     const result = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "aimentorstdi@gmail.com",
-      subject: `New Contact Form from ${name || "Unknown"}`,
+      subject: `New Contact Form from ${finalName || "Unknown"}`,
       html: `
         <h1>New Contact Form Message</h1>
-        <p><strong>Name:</strong> ${name || ""}</p>
+        <p><strong>Name:</strong> ${finalName || ""}</p>
         <p><strong>Email:</strong> ${email || ""}</p>
         <p><strong>Phone:</strong> ${phone || ""}</p>
         <p><strong>Service:</strong> ${service || ""}</p>
         <p><strong>Message:</strong></p>
-        <p>${message || ""}</p>
+        <p>${finalMessage || ""}</p>
       `,
     });
 
