@@ -1,8 +1,8 @@
 {
-"name": "aimentors-backend",
+"name": "ai-mentors-backend",
 "version": "1.0.0",
+"private": true,
 "dependencies": {
-"@vercel/node": "^3.0.0",
-"resend": "^3.2.0"
+"resend": "3.2.0"
 }
 }
